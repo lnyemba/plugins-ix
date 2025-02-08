@@ -51,8 +51,10 @@ def inspect (file: Annotated[str,typer.Argument(help="python file that contains 
         print (_msg)
 @appr.command(name="add")
 def add_registry(
-    registry_folder: Annotated[str,typer.Argument(help="registry folder")],
-    python_file: Annotated[str,typer.Argument(help="python file that contains functions to be used as plugins")]):
+    
+    python_file: Annotated[str,typer.Argument(help="python file that contains functions to be used as plugins")],
+    registry_folder:str=typer.Option(default=os.environ.get('REGISTRY_FOLDER',None),help="path of the plugin registry folder")
+    ):
     """
     This function will add/override a file to the registry
     """
@@ -62,9 +64,9 @@ def add_registry(
         _names = list(loader.get().keys())
         reg = plugins.Registry(registry_folder)
         reg.set(python_file,_names)
-        print (f"""{CHECK_MARK} Import was [bold]successful[/bold] into {registry_folder}""")
+        print (f"""{CHECK_MARK} Import was [bold]successful[/bold] into {reg._folder}""")
     else:
-        print (f"""{TIMES_MARK} Import [bold]Failed[/bold] into {registry_folder}""")        
+        print (f"""{TIMES_MARK} Import [bold]Failed[/bold] into {registry_folder}, please consider setting environment REGISTRY_FOLDER """)        
 
 def to_Table(df: pd.DataFrame):
     """Displays a Pandas DataFrame as a rich table."""
