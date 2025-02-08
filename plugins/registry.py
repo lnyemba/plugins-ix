@@ -7,12 +7,11 @@ import os
 import json
 import shutil
 import pandas as pd
-
+from . import loader
 #
 # we should have a way to register these functions using rudimentary means
 #
 
-REGISTRY_PATH=None
 class Registry :
 
     def __init__(self,folder=None,reader = None) :
@@ -24,6 +23,7 @@ class Registry :
         # self._context = self._folder.split(os.sep)[-1]
         self._reader = reader
         self._data = {}
+        
         self.make(self._folder) #-- making the folder just in case we need to
         # self.make(os.sep.join([self._folder,'code']))
         self.load()
@@ -88,7 +88,17 @@ class Registry :
         if _file in self._data :
             return _name in self._data[_file]['content']
         return False    
-        
+    def get(self,_key):
+        if '@' in _key :
+            _name,_file = _key.split('@')
+        else:
+            _name = _key
+            _file = None
+            if len(self._data.keys()) == 1 :
+                _file = list(self._data.keys())[0]
+        filename = self._data[_file]['path']
+        _loader = loader.Loader(file=filename)
+        return _loader.get(_name)
     def write (self):
         #
         # will only write the main
