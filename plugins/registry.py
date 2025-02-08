@@ -20,7 +20,7 @@ class Registry :
         
         """
         self._folder = folder if folder else os.environ.get('REGISTRY_FOLDER',None)
-        self._filename = os.sep.join([folder,'plugins-registry.json'])
+        self._filename = os.sep.join([self._folder,'plugins-registry.json'])
         # self._context = self._folder.split(os.sep)[-1]
         self._reader = reader
         self._data = {}
