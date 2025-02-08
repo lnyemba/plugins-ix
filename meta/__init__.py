@@ -1,6 +1,6 @@
 __author__="steve l. nyemba<steve@the-phi.com>"
 __version__="0.1"
-__app_name__="plugins-ix"
+__app_name__="plugin-ix"
 __license__="""
 Copyright 2025, Steve L. Nyemba <steve@the-phi.com>
 
