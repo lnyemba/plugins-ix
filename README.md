@@ -8,7 +8,7 @@ The goal of this project is to facilitate a plug-n-play architectural style with
 
 #
 
-The **Plugins-ix** is using python libraries (no dependencies other than typer) and is made of **three components** :
+The **Plugins-ix** is using python libraries (no dependencies other than typer) and is made of **3 components** :
 
 0. **Loader**
 
