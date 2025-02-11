@@ -2,9 +2,13 @@
 
 The goal of this project is to facilitate a plug-n-play architectural style with python i.e have a function in a **file**, **load** it and **execute** it. **Plugins-ix** is fully open-source and feel free to change distribute at will ... giving credit wont hurt ;-)
 
+**Easy Installation**
+    
+        pip install git+https://github.com/lnyemba/plugins-ix
 
-The **Plugins-ix** is using python libraries (no dependencies) and is made of **three components** :
+#
 
+The **Plugins-ix** is using python libraries (no dependencies other than typer) and is made of **three components** :
 
 0. **Loader**
 
@@ -30,3 +34,6 @@ functions are referenced here in the following format **function**@**file** e.g:
 2. **CLI: plugin-ix**
 
 The command-line interpreter **plugin-ix** helps manage plugins in a given location (considered the registry). It is a great example for how we use registry
+
+#
+    plugin-ix --help
