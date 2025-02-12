@@ -20,6 +20,13 @@ class Registry :
         """
         self._folder = folder if folder else os.environ.get('REGISTRY_FOLDER',None)
         self._filename = os.sep.join([self._folder,'plugins-registry.json'])
+        #
+        # Let us refactor this in case the user decided to provide a file name instead
+        if os.path.isfile(self._folder) :
+            _name = self._folder.split(os.sep)[-1].strip()
+            self._folder = os.sep.join(self._folder.split(os.sep)[:-1]).strip()
+            self._filename = os.sep.join([self._folder,_name])
+            print (' *** ',_name,self._folder)
         # self._context = self._folder.split(os.sep)[-1]
         self._reader = reader
         self._data = {}
@@ -89,8 +96,13 @@ class Registry :
             return _name in self._data[_file]['content']
         return False    
     def get(self,_key):
+        """
+        _key    is either file.funcName, _funcName@file
+        """
         if '@' in _key :
             _name,_file = _key.split('@')
+        elif '.' in _key :
+            _file,_name = _key.split('.')
         else:
             _name = _key
             _file = None

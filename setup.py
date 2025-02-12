@@ -8,7 +8,7 @@ _args = {
     "name":meta.__app_name__,
     "version":meta.__version__,
     "author":meta.__author__,
-    "packages": find_packages(include=['meta','plugins']),
+    "packages": find_packages(include=['meta','plugin_ix']),
     "scripts":["bin/plugin-ix"]
 
         }

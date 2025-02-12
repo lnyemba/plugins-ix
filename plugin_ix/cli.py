@@ -20,7 +20,7 @@ from enum import Enum
 from rich import print
 # from rich.console import Console
 from rich.table import Table
-import plugins
+import plugin_ix
 app = typer.Typer()
 # app_e = typer.Typer()   #-- handles etl (run, generate)
 # app_x = typer.Typer()   #-- handles plugins (list,add, test)
@@ -42,7 +42,7 @@ def inspect (file: Annotated[str,typer.Argument(help="python file that contains 
     """
     This function allows plugin management / testing 
     """
-    loader = plugins.Loader()
+    loader = plugin_ix.Loader()
     if loader.load(file=file,decorator= decorator) :
         n = len(loader._modules.keys())
         print (f"""{CHECK_MARK} Found {n} functions in [bold]{file}[/bold]""")
@@ -58,11 +58,11 @@ def add_registry(
     """
     This function will add/override a file to the registry
     """
-    # reg = plugins.Registry(rg_file)
-    loader = plugins.Loader(file=python_file)
+    # reg = plugin_ix.Registry(rg_file)
+    loader = plugin_ix.Loader(file=python_file)
     if loader.get() :
         _names = list(loader.get().keys())
-        reg = plugins.Registry(registry_folder)
+        reg = plugin_ix.Registry(registry_folder)
         reg.set(python_file,_names)
         print (f"""{CHECK_MARK} Import was [bold]successful[/bold] into {reg._folder}""")
     else:
@@ -82,13 +82,13 @@ def to_Table(df: pd.DataFrame):
     return table
 @appr.command(name="list")
 def list_registry(
-        folder:str=typer.Option(default=os.environ.get('REGISTRY_FOLDER',None),help="path of the plugin registry folder")):
-              #folder: Annotated[str,typer.Argument(help="registry folder where")]=plugins.REGISTRY_PATH) :
+        folder:str=typer.Option(default=os.environ.get('REGISTRY_FOLDER',None),help="path of the plugin registry folder. You can also provide the file name")):
+              #folder: Annotated[str,typer.Argument(help="registry folder where")]=plugin_ix.REGISTRY_PATH) :
     """
     This function will summarize the registry in a table
     """
     try:
-        reg = plugins.Registry(folder)
+        reg = plugin_ix.Registry(folder)
 
         print (to_Table(reg.stats()))
     except Exception as e :
