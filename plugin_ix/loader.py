@@ -21,6 +21,7 @@ class Loader :
         # self._names = _names if type(_names) == list else [_names]
         self._modules = {}
         self._names = []
+        self._alias = {} #-- synonyms
         if 'file' in _args :
             self.load(**_args)
         # self._registry = _args['registry']
@@ -43,6 +44,9 @@ class Loader :
             for _name in dir(module) :
                 if self.isplugin(module,_name,_decoratorName) :
                     self._modules[_name] = getattr(module,_name)
+                    if hasattr(self._modules[_name],'name') :
+                        _alt = getattr(self._modules[_name],'name')
+                        self._alias[_alt] = _name
         return self._modules is not None
                     # self._names [_name]
     # def format (self,**_args):
@@ -85,16 +89,28 @@ class Loader :
         """
         This will determine if the module name is loaded or not
         """
-        return _name in self._modules 
+        return _name in self._modules or _name in self._alias
     def names (self):
         return list(self._modules.keys())
     def get (self,_name=None):
         """
         This functiion determines how many modules loaded vs unloaded given the list of names
         """
-        return self._modules.get(_name,None) if _name else self._modules
+        if _name in self._alias :
+            _name = self._alias[_name]
+        if _name in self._modules :
+            return self._modules[_name]
+
     def apply(self,_name,**_args):
         _pointer = self.get(_name)
         if _pointer :
             return _pointer (**_args) if _args else _pointer()
-
+    def visitor(self,_args,logger=None) :
+        for _name in self._names :
+            _pointer = self.get(_name)
+            _kwargs = _pointer(_args)
+            if (type(_kwargs) == pd.DataFrame and not _kwargs.empty) or _kwargs is not None :
+                _args = _kwargs
+            # _args = _caller(_pointer,_args)
+        return _args
+   
