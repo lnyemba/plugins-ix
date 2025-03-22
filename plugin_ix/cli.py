@@ -62,8 +62,8 @@ def add_registry(
     # reg = plugin_ix.Registry(rg_file)
     loader = plugin_ix.Loader() #(file=file)
     loader.load(file=file,decorator=decorator)
-    if loader.get() :
-        _names = list(loader.get().keys())
+    if loader.names() :
+        _names = loader.names() #list(loader.get().keys())
         reg = plugin_ix.Registry(folder)
         reg.set(file,_names)
         print (f"""{CHECK_MARK} Import was [bold]successful[/bold] into {reg._folder}""")
