@@ -24,7 +24,7 @@ class Loader :
         self._alias = {} #-- synonyms
         if 'file' in _args :
             self.load(**_args)
-        # self._registry = _args['registry']
+        self._registry = _args['registry'] if 'registry' in _args else None
 
     def load (self,**_args):
         """
@@ -65,7 +65,7 @@ class Loader :
             _key = 'inline@'+_key.__name__
             # self._names.append(_key.__name__)
         else:
-            _pointer = self._registry.get(key=_key)
+            _pointer = self._registry.get(_key)
 
         if _pointer  :
             self._modules[_key] = _pointer
